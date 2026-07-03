@@ -6,7 +6,7 @@
 /*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 13:00:35 by krahnama          #+#    #+#             */
-/*   Updated: 2026/07/03 15:00:36 by krahnama         ###   ########.fr       */
+/*   Updated: 2026/07/03 16:54:42 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,3 +102,30 @@ char *ft_strchr(const char *s, int c)
 
     return (NULL);
 }       
+
+char *ft_substr(char const *s, unsigned int start, size_t len)
+{
+	size_t i;
+	size_t string_len;
+	char *substring;
+	i = 0;
+
+	if (!s)
+		return (NULL);
+
+	string_len = ft_strlen(s);
+	if (start >= string_len)
+		return (ft_strdup(""));
+	if (len > string_len - start)
+		len = string_len - start;
+	substring = malloc(len + 1);
+	if (!substring)
+		return (NULL);
+	while (i < len && s[start + i])
+	{
+		substring[i] = s[start + i];
+		i++;	
+	}
+	substring[i] = '\0';
+	return (substring);
+}
