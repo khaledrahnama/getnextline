@@ -6,7 +6,7 @@
 /*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 13:00:35 by krahnama          #+#    #+#             */
-/*   Updated: 2026/07/03 16:54:42 by krahnama         ###   ########.fr       */
+/*   Updated: 2026/07/06 21:02:52 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,9 @@ char	*ft_strjoin(char const *s1, char const *s2)
 {
 	size_t	len1;
 	size_t	len2;
-	size_t	i;
-	size_t	j;
 	char	*result;
+	char	*start;
 
-	i = 0;
-	j = 0;
 	if (!s1 && !s2)
 		return (NULL);
 	if (!s1)
@@ -69,50 +66,42 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	result = malloc(len1 + len2 + 1);
 	if (!result)
 		return (NULL);
-	while (s1[i])
-	{
-		result[i] = s1[i];
-		i++;
-	}
-	while (s2[j])
-	{
-		result[i] = s2[j];
-		i++;
-		j++;
-	}
-	result[i] = '\0';
-	return (result);
+	start = result;
+	while (*s1)
+		*result++ = *s1++;
+	while (*s2)
+		*result++ = *s2++;
+	*result = '\0';
+	return (start);
 }
 
-char *ft_strchr(const char *s, int c)
+char	*ft_strchr(const char *s, int c)
 {
-    size_t i;
-    i = 0;
+	size_t	i;
 
-    if(!s)
-        return (NULL);
-    while(s[i])
-    {
-        if(s[i] == (char)c)
-            return ((char *)&s[i]);
-        i++;
-    }
-    if((char)c == '\0')
-        return ((char *)&s[i]);
-
-    return (NULL);
-}       
-
-char *ft_substr(char const *s, unsigned int start, size_t len)
-{
-	size_t i;
-	size_t string_len;
-	char *substring;
 	i = 0;
-
 	if (!s)
 		return (NULL);
+	while (s[i])
+	{
+		if (s[i] == (char)c)
+			return ((char *)&s[i]);
+		i++;
+	}
+	if ((char)c == '\0')
+		return ((char *)&s[i]);
+	return (NULL);
+}
 
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	size_t	i;
+	size_t	string_len;
+	char	*substring;
+
+	i = 0;
+	if (!s)
+		return (NULL);
 	string_len = ft_strlen(s);
 	if (start >= string_len)
 		return (ft_strdup(""));
@@ -124,7 +113,7 @@ char *ft_substr(char const *s, unsigned int start, size_t len)
 	while (i < len && s[start + i])
 	{
 		substring[i] = s[start + i];
-		i++;	
+		i++;
 	}
 	substring[i] = '\0';
 	return (substring);
