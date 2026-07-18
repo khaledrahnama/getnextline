@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 13:00:38 by krahnama          #+#    #+#             */
-/*   Updated: 2026/07/06 21:18:57 by krahnama         ###   ########.fr       */
+/*   Updated: 2026/07/16 10:13:41 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,18 +82,18 @@ static char	*extract_line(char **stash)
 
 char *get_next_line(int fd)
 {
-    static char *stash = NULL; // Initialize buffer to NULL for the first call
+    static char *stash = NULL; 
     char *line;
-    line = NULL; // Initialize line to NULL for the first call
-
+    line = NULL; 
+	
     if (fd < 0 || BUFFER_SIZE <= 0)
         return NULL;
     
     if(!stash)
     {
-       stash = ft_strdup(""); // Initialize buffer to an empty string if it's NULL
+       stash = ft_strdup(""); 
        if(!stash)
-           return NULL; // Handle memory allocation failure
+           return NULL; 
     }
     if (!read_and_append(fd, &stash))
 		return (NULL);
