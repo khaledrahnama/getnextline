@@ -3,65 +3,71 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 13:00:38 by krahnama          #+#    #+#             */
-/*   Updated: 2026/07/21 00:28:59 by krahnama         ###   ########.fr       */
+/*   Updated: 2026/07/21 00:31:20 by khaledrahna      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/07/03 13:00:38 by krahnama          #+#    #+#             */
+/*   Updated: 2026/07/16 10:13:41 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char *grow_stash(char *stash, size_t used_len, size_t needed_len,size_t *capacity)
-{
-	char *bigger;
-	size_t new_capacity;
-	size_t i;
 
-	if(needed_len <= *capacity)
+static char	*grow_stash(char *stash, size_t used_len, size_t needed_len,
+		size_t *capacity)
+{
+	char	*bigger;
+	size_t	new_capacity;
+	size_t	i;
+
+	if (needed_len < *capacity)
 		return (stash);
 	new_capacity = *capacity;
-	if(new_capacity == 0)
+	if (new_capacity < 1)
 		new_capacity = 1;
-	while(new_capacity < needed_len)
+	while (new_capacity <= needed_len)
 		new_capacity = new_capacity * 2;
 	bigger = malloc(new_capacity);
-	if(!bigger)
-	{
+	if (!bigger)
 		return (NULL);
 	i = 0;
-	while(i < used_len)
+	while (i < used_len)
 	{
 		bigger[i] = stash[i];
-			i++;
-		}
-		free(stash);
-		*capacity = new_capacity;
-		return (bigger);
+		i++;
 	}
+	free(stash);
+	*capacity = new_capacity;
+	return (bigger);
 }
-
-
-
 
 static char	*read_and_append(int fd, char **stash)
 {
 	char	*buffer;
-	size_t capacity ;
-	size_t i;
-	size_t len;
 	ssize_t	bytes_read;
+	size_t	len;
+	size_t	capacity;
+	size_t	i;
 
-	if(ft_strchr(*stash, '\n'))
+	if (ft_strchr(*stash, '\n'))
 		return (*stash);
-
 	buffer = malloc(BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
-
 	len = ft_strlen(*stash);
-	capacity = len+1;
-
+	capacity = len + 1;
 	bytes_read = 1;
 	while (bytes_read > 0)
 	{
@@ -74,11 +80,10 @@ static char	*read_and_append(int fd, char **stash)
 			return (NULL);
 		}
 		if (bytes_read == 0)
-			break;
-
+			break ;
 		buffer[bytes_read] = '\0';
-		*stash = grow_stash(*stash, len, len + bytes_read + 1, &capacity);
-		if(!*stash)
+		*stash = grow_stash(*stash, len, len + (size_t)bytes_read, &capacity);
+		if (!*stash)
 		{
 			free(buffer);
 			return (NULL);
@@ -87,13 +92,12 @@ static char	*read_and_append(int fd, char **stash)
 		while (i < (size_t)bytes_read)
 		{
 			(*stash)[len + i] = buffer[i];
-			i++;	
+			i++;
 		}
-		len = len + bytes_read;
+		len = len + (size_t)bytes_read;
 		(*stash)[len] = '\0';
-		if (ft_strchr(*stash, '\n'))
-			break;
-		                              
+		if (ft_strchr(buffer, '\n'))
+			break ;
 	}
 	free(buffer);
 	return (*stash);
