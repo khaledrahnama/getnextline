@@ -3,26 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
+/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/16 10:16:12 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/07/16 12:01:22 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/07/20 21:28:43 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <fcntl.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(int argc, char **argv)
 {
-    
     int fd;
-    fd = open(argv[1], O_RDONLY);
     char *line;
-    line = NULL;
     int i = 1;
-
 
     if (argc < 2)
     {
@@ -30,21 +27,28 @@ int main(int argc, char **argv)
         return (1);
     }
 
-      fd = open(argv[1], O_RDONLY);
+    fd = open(argv[1], O_RDONLY);
     if (fd < 0)
     {
-        printf("Error opening file\n");
+        perror("Error opening file");
         return (1);
     }
     
+    printf("BUFFER_SIZE = %d\n", BUFFER_SIZE); // Debug line
+    
     line = get_next_line(fd);
-    while(line)
+    while (line)
     {
-            printf("line %d = %s", i, line);
-            free(line);
-            i++;
-            line = get_next_line(fd);
-
+        printf("line %d = %s\n", i, line);
+      //  free(line);
+        i++;
+        line = get_next_line(fd);
     }
+    
+    // Check if we reached EOF or if there was an error
+    if (line == NULL)
+        printf("Reached EOF or error at line %d\n", i);
+    
     close(fd);
+    return (0);
 }
