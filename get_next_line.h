@@ -6,7 +6,7 @@
 /*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 13:00:42 by krahnama          #+#    #+#             */
-/*   Updated: 2026/07/06 21:02:57 by krahnama         ###   ########.fr       */
+/*   Updated: 2026/07/21 13:10:42 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,6 @@ size_t ft_strlen(const char *s);
 char *ft_strdup(const char *s);
 char *ft_strchr(const char *s, int c);
 char *ft_substr(char const *s, unsigned int start, size_t len); 
-
+void *ft_memcpy(void *dst, const void *src, size_t n);
 
 #endif
