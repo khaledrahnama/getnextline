@@ -6,7 +6,7 @@
 /*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/21 12:43:44 by krahnama          #+#    #+#             */
-/*   Updated: 2026/07/21 13:08:19 by krahnama         ###   ########.fr       */
+/*   Updated: 2026/07/21 14:00:00 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,27 +54,36 @@ static char	*read_and_append(int fd, char **stash)
 		return (NULL);
 	len = ft_strlen(*stash);
 	capacity = len + 1;
-	while ((bytes = read(fd, buffer, BUFFER_SIZE)) > 0)
+	bytes = read(fd, buffer, BUFFER_SIZE);
+	while (bytes > 0)
 	{
 		buffer[bytes] = '\0';
-		*stash = grow_stash(*stash, len, len + bytes, &capacity);
+		*stash = grow_stash(*stash, len, len + (size_t)bytes, &capacity);
 		if (!*stash)
-			return (free(buffer), NULL);
-		ft_memcpy(*stash + len, buffer, bytes);
-		len += bytes;
+		{
+			free(buffer);
+			return (NULL);
+		}
+		ft_memcpy(*stash + len, buffer, (size_t)bytes);
+		len += (size_t)bytes;
 		(*stash)[len] = '\0';
 		if (ft_strchr(buffer, '\n'))
 			break ;
+		bytes = read(fd, buffer, BUFFER_SIZE);
 	}
 	free(buffer);
 	if (bytes == -1)
-		return (free(*stash), *stash = NULL, NULL);
+	{
+		free(*stash);
+		*stash = NULL;
+		return (NULL);
+	}
 	return (*stash);
 }
 
 static char	*extract_line(char **stash)
 {
-	char	*line;      
+	char	*line;
 	char	*newline_pos;
 	char	*temp;
 	size_t	line_len;
@@ -89,6 +98,13 @@ static char	*extract_line(char **stash)
 		if (!line)
 			return (NULL);
 		temp = ft_strdup(newline_pos + 1);
+		if (!temp)
+		{
+			free(line);
+			free(*stash);
+			*stash = NULL;
+			return (NULL);
+		}
 		free(*stash);
 		*stash = temp;
 	}
@@ -96,32 +112,30 @@ static char	*extract_line(char **stash)
 	{
 		line = ft_strdup(*stash);
 		free(*stash);
-		*stash  = NULL;
+		*stash = NULL;
 		if (!line)
 			return (NULL);
 	}
 	return (line);
 }
 
-
-char *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
-    static char *stash = NULL; 
-    char *line;
-    line = NULL; 
-	
-    if (fd < 0 || BUFFER_SIZE <= 0)
-        return NULL;
-    
-    if(!stash)
-    {
-       stash = ft_strdup(""); 
-       if(!stash)
-           return NULL; 
-    }
-    if (!read_and_append(fd, &stash))
+	static char	*stash = NULL;
+	char		*line;
+
+	line = NULL;
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (!stash || !*stash   )
+	if (!stash)
+	{
+		stash = ft_strdup("");
+		if (!stash)
+			return (NULL);
+	}
+	if (!read_and_append(fd, &stash))
+		return (NULL);
+	if (!stash || !*stash)
 	{
 		free(stash);
 		stash = NULL;
@@ -135,5 +149,4 @@ char *get_next_line(int fd)
 		return (NULL);
 	}
 	return (line);
-
 }
