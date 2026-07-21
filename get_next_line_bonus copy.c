@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/21 12:43:44 by krahnama          #+#    #+#             */
+/*   Created: 2026/07/18 00:00:00 by khaledrahna       #+#    #+#             */
 /*   Updated: 2026/07/21 15:00:00 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 typedef struct s_stash
 {
@@ -152,22 +152,22 @@ static char	*reset_and_fail(t_stash *s)
 
 char	*get_next_line(int fd)
 {
-	static t_stash	s;
+	static t_stash	s[MAX_FD];
 	char			*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd >= MAX_FD || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (!s.data)
+	if (!s[fd].data)
 	{
-		s.data = ft_strdup("");
-		if (!s.data)
+		s[fd].data = ft_strdup("");
+		if (!s[fd].data)
 			return (NULL);
-		s.capacity = 1;
+		s[fd].capacity = 1;
 	}
-	if (!read_and_append(fd, &s) || !s.data || !*s.data)
-		return (reset_and_fail(&s));
-	line = extract_line(&s);
+	if (!read_and_append(fd, &s[fd]) || !s[fd].data || !*s[fd].data)
+		return (reset_and_fail(&s[fd]));
+	line = extract_line(&s[fd]);
 	if (!line)
-		return (reset_and_fail(&s));
+		return (reset_and_fail(&s[fd]));
 	return (line);
 }
