@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
+/*   By: khaledrahnama <khaledrahnama@student.42.fr> +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/18 00:00:00 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/07/21 13:54:38 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/07/18 00:00:00 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,5 @@ size_t	ft_strlen(const char *s);
 char	*ft_strdup(const char *s);
 char	*ft_strchr(const char *s, int c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
-void	*ft_memcpy(void *dst, const void *src, size_t n);
 
 #endif

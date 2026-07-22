@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   checker_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
+/*   By: khaledrahnama <khaledrahnama@student.42.fr> +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/21 00:58:33 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/07/21 01:07:35 by khaledrahna      ###   ########.fr       */
+/*   Created: 2026/07/20 00:00:00 by khaledrahna       #+#    #+#             */
+/*   Updated: 2026/07/20 00:00:00 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "get_next_line_bonus.h"
 #include <fcntl.h>
 #include <stdio.h>
- 
+
 int	main(int argc, char **argv)
 {
 	int		fd_a;
@@ -22,7 +21,7 @@ int	main(int argc, char **argv)
 	char	*line;
 	int		a_done;
 	int		b_done;
- 
+
 	if (argc != 3)
 	{
 		printf("Usage: %s <file1> <file2>\n", argv[0]);

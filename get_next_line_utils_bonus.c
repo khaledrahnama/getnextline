@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
+/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/18 00:00:00 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/07/21 13:54:40 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/07/21 12:44:43 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

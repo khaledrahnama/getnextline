@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khaledrahnama <khaledrahnama@student.42    +#+  +:+       +#+        */
+/*   By: khaledrahnama <khaledrahnama@student.42.fr> +#+  +:+       +#+       */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/21 00:57:09 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/07/21 01:07:38 by khaledrahna      ###   ########.fr       */
+/*   Created: 2026/07/20 00:00:00 by khaledrahna       #+#    #+#             */
+/*   Updated: 2026/07/20 00:00:00 by khaledrahna      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "get_next_line.h"
 #include <fcntl.h>
