@@ -6,52 +6,24 @@
 /*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/18 00:00:00 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/07/21 15:00:00 by krahnama         ###   ########.fr       */
+/*   Updated: 2026/07/21 17:00:00 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-typedef struct s_stash
-{
-	char	*data;
-	size_t	len;
-	size_t	capacity;
-}	t_stash;
-
-static int	grow_stash(t_stash *s, size_t needed_len)
-{
-	char	*bigger;
-	size_t	new_capacity;
-	size_t	i;
-
-	if (needed_len < s->capacity)
-		return (1);
-	new_capacity = s->capacity;
-	if (new_capacity < 1)
-		new_capacity = 1;
-	while (new_capacity <= needed_len)
-		new_capacity = new_capacity * 2;
-	bigger = malloc(new_capacity);
-	if (!bigger)
-		return (0);
-	i = 0;
-	while (i < s->len)
-	{
-		bigger[i] = s->data[i];
-		i++;
-	}
-	free(s->data);
-	s->data = bigger;
-	s->capacity = new_capacity;
-	return (1);
-}
-
 static int	append_chunk(t_stash *s, char *buffer, size_t bytes)
 {
+	size_t	i;
+
 	if (!grow_stash(s, s->len + bytes))
 		return (0);
-	ft_memcpy(s->data + s->len, buffer, bytes);
+	i = 0;
+	while (i < bytes)
+	{
+		s->data[s->len + i] = buffer[i];
+		i++;
+	}
 	s->len += bytes;
 	s->data[s->len] = '\0';
 	return (1);
@@ -84,18 +56,6 @@ static int	read_and_append(int fd, t_stash *s)
 	return (bytes != -1);
 }
 
-static void	clear_stash(t_stash *s)
-{
-	free(s->data);
-	s->data = NULL;
-}
-
-static void	resync_len(t_stash *s)
-{
-	s->len = ft_strlen(s->data);
-	s->capacity = s->len + 1;
-}
-
 static char	*split_at_newline(t_stash *s, char *newline_pos, size_t line_len)
 {
 	char	*line;
@@ -108,10 +68,11 @@ static char	*split_at_newline(t_stash *s, char *newline_pos, size_t line_len)
 	if (!temp)
 	{
 		free(line);
-		clear_stash(s);
+		free(s->data);
+		s->data = NULL;
 		return (NULL);
 	}
-	clear_stash(s);
+	free(s->data);
 	s->data = temp;
 	return (line);
 }
@@ -133,21 +94,14 @@ static char	*extract_line(t_stash *s)
 	else
 	{
 		line = ft_strdup(s->data);
-		clear_stash(s);
+		free(s->data);
+		s->data = NULL;
 	}
 	if (!line)
 		return (NULL);
-	resync_len(s);
+	s->len = ft_strlen(s->data);
+	s->capacity = s->len + 1;
 	return (line);
-}
-
-static char	*reset_and_fail(t_stash *s)
-{
-	free(s->data);
-	s->data = NULL;
-	s->len = 0;
-	s->capacity = 0;
-	return (NULL);
 }
 
 char	*get_next_line(int fd)
@@ -162,12 +116,16 @@ char	*get_next_line(int fd)
 		s[fd].data = ft_strdup("");
 		if (!s[fd].data)
 			return (NULL);
+		s[fd].len = 0;
 		s[fd].capacity = 1;
 	}
-	if (!read_and_append(fd, &s[fd]) || !s[fd].data || !*s[fd].data)
-		return (reset_and_fail(&s[fd]));
-	line = extract_line(&s[fd]);
+	line = NULL;
+	if (read_and_append(fd, &s[fd]) && s[fd].data && *s[fd].data)
+		line = extract_line(&s[fd]);
 	if (!line)
-		return (reset_and_fail(&s[fd]));
+	{
+		free(s[fd].data);
+		s[fd].data = NULL;
+	}
 	return (line);
 }

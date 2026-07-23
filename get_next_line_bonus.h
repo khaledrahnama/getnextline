@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khaledrahnama <khaledrahnama@student.42.fr> +#+  +:+       +#+       */
+/*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/18 00:00:00 by khaledrahna       #+#    #+#             */
-/*   Updated: 2026/07/18 00:00:00 by khaledrahna      ###   ########.fr       */
+/*   Updated: 2026/07/21 17:00:00 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,18 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+typedef struct s_stash
+{
+	char	*data;
+	size_t	len;
+	size_t	capacity;
+}	t_stash;
+
 char	*get_next_line(int fd);
-char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlen(const char *s);
 char	*ft_strdup(const char *s);
 char	*ft_strchr(const char *s, int c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
+int		grow_stash(t_stash *s, size_t needed_len);
 
 #endif

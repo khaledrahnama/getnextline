@@ -6,7 +6,7 @@
 /*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 13:00:35 by krahnama          #+#    #+#             */
-/*   Updated: 2026/07/21 13:09:10 by krahnama         ###   ########.fr       */
+/*   Updated: 2026/07/21 17:00:00 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,33 +46,6 @@ char	*ft_strdup(const char *s)
 	}
 	dup[i] = '\0';
 	return (dup);
-}
-
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	size_t	len1;
-	size_t	len2;
-	char	*result;
-	char	*start;
-
-	if (!s1 && !s2)
-		return (NULL);
-	if (!s1)
-		return (ft_strdup(s2));
-	if (!s2)
-		return (ft_strdup(s1));
-	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
-	result = malloc(len1 + len2 + 1);
-	if (!result)
-		return (NULL);
-	start = result;
-	while (*s1)
-		*result++ = *s1++;
-	while (*s2)
-		*result++ = *s2++;
-	*result = '\0';
-	return (start);
 }
 
 char	*ft_strchr(const char *s, int c)
@@ -119,21 +92,30 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (substring);
 }
 
-void	*ft_memcpy(void *dst, const void *src, size_t n)
+int	grow_stash(t_stash *s, size_t needed_len)
 {
-	unsigned char		*d;
-	const unsigned char	*s;
-	size_t				i;
+	char	*bigger;
+	size_t	new_capacity;
+	size_t	i;
 
-	if (!dst || !src)
-		return (NULL);
-	d = (unsigned char *)dst;
-	s = (const unsigned char *)src;
+	if (needed_len < s->capacity)
+		return (1);
+	new_capacity = s->capacity;
+	if (new_capacity < 1)
+		new_capacity = 1;
+	while (new_capacity <= needed_len)
+		new_capacity = new_capacity * 2;
+	bigger = malloc(new_capacity);
+	if (!bigger)
+		return (0);
 	i = 0;
-	while (i < n)
+	while (i < s->len)
 	{
-		d[i] = s[i];
+		bigger[i] = s->data[i];
 		i++;
 	}
-	return (dst);
+	free(s->data);
+	s->data = bigger;
+	s->capacity = new_capacity;
+	return (1);
 }
