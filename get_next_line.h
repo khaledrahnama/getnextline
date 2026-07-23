@@ -6,7 +6,7 @@
 /*   By: krahnama <krahnama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/03 13:00:42 by krahnama          #+#    #+#             */
-/*   Updated: 2026/07/21 13:10:42 by krahnama         ###   ########.fr       */
+/*   Updated: 2026/07/21 17:00:00 by krahnama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,18 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-char *get_next_line(int fd);
-char *ft_strjoin(char const *s1, char const *s2);
-size_t ft_strlen(const char *s);
-char *ft_strdup(const char *s);
-char *ft_strchr(const char *s, int c);
-char *ft_substr(char const *s, unsigned int start, size_t len); 
-void *ft_memcpy(void *dst, const void *src, size_t n);
+typedef struct s_stash
+{
+	char	*data;
+	size_t	len;
+	size_t	capacity;
+}	t_stash;
+
+char	*get_next_line(int fd);
+size_t	ft_strlen(const char *s);
+char	*ft_strdup(const char *s);
+char	*ft_strchr(const char *s, int c);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+int		grow_stash(t_stash *s, size_t needed_len);
 
 #endif
